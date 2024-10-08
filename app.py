@@ -6,7 +6,7 @@ import speech_recognition as sr
 
 from src.capture_speech import capture_speech
 from src.generate_questions import generate_questions
-from src.score_answer import score_answer_opnai, score_answer_litellm
+from src.score_answer import score_answer_openai, score_answer_litellm
 
 # Initialize pyttsx3 with a more human-like voice
 engine = pyttsx3.init()

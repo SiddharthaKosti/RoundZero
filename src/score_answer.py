@@ -48,7 +48,7 @@ def score_answer_litellm(question, answer):
         return {"error": "Failed to parse JSON response"}
 
 
-def score_answer_opnai(question, answer):
+def score_answer_openai(question, answer):
     evaluator_prompt = create_evaluator_prompt(question, answer)
     client = openai.OpenAI()
     response = client.chat.completions.create(
