@@ -6,6 +6,7 @@ import speech_recognition as sr
 
 from src.capture_speech import capture_speech
 from src.generate_questions import generate_questions
+from src.score_answer import score_answer_opnai, score_answer_litellm
 
 # Initialize pyttsx3 with a more human-like voice
 engine = pyttsx3.init()
@@ -51,6 +52,18 @@ if st.sidebar.button("Generate Questions"):
     # Capture user's response
     st.session_state.user_response = capture_speech()
 
+    # Evaluate the user's response
+    if st.session_state.user_response is not None:
+        get_score_ans = score_answer_litellm(
+            st.session_state.questions[st.session_state.current_question_index],
+            st.session_state.user_response
+        )
+        st.divider()
+        st.write("SCORE: ", get_score_ans["accuracy_score"])
+        st.write("EXPLAINATION: ", get_score_ans["reason"])
+
+
+
 # Only show the "Next Question" button if questions have been generated
 if st.session_state.questions_generated:
     # Button to proceed to the next question
@@ -68,5 +81,15 @@ if st.session_state.questions_generated:
             
             # Capture user's response for the next question
             st.session_state.user_response = capture_speech()
+
+            # Evaluate the user's response
+            if st.session_state.user_response is not None:
+                get_score_ans = score_answer_litellm(
+                    st.session_state.questions[st.session_state.current_question_index],
+                    st.session_state.user_response
+                )
+                st.divider()
+                st.write("SCORE: ", get_score_ans["accuracy_score"])
+                st.write("EXPLAINATION: ", get_score_ans["reason"])
         else:
             st.write("No more questions.")
